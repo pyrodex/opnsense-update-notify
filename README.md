@@ -15,6 +15,8 @@ This is a script that makes an API connection to OPNsense and checks if there is
 
 Based on the script by Bart J. Smit, 'ObecalpEffect' and Franco Fichtner, forked from https://github.com/bartsmit/opnsense-update-email.
 
+Based on the script from Bryce Torcello, forked from https://github.com/losuler/opnsense-update-notify.
+
 ## Setup
 
 It's recommended to create a user with access restricted to the API endpoints required to retrieve update information needed by the script. The steps to do this are as follows:
