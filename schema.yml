@@ -1,6 +1,11 @@
 ---
 
-emitter: enum('telegram')
+emitter: enum('telegram', 'email')
+
+email:
+  from: str()
+  to: str()
+  host: str()
 
 telegram:
   token: str()

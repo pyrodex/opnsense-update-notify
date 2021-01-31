@@ -59,9 +59,22 @@ opnsense:
 
 ```yaml
 emitter: telegram
+emitter: email
 ```
 
-The `emitter` refers to one of the message services listed in the subsections below (only Telegram for now). 
+The `emitter` refers to one of the message services listed in the subsections below (only Telegram and Email for now). 
+
+#### Email
+
+```yaml
+email:
+  from:
+  to:
+  host:
+```
+`from` is the Email address you want to tag as FROM when notifications are sent
+`to` is the Email address you want to tag as TO when notifications are sent to be received
+`host` is the SMTP host (TBD add auth and port)
 
 #### Telegram
 

@@ -8,6 +8,9 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import yaml
 import yamale
 
+import smtplib
+from email.message import EmailMessage
+
 def valid_conf(schema_file, config_file):
     schema_yamale = yamale.make_schema(schema_file)
     config_yamale = yamale.make_data(config_file)
@@ -104,6 +107,10 @@ api_secret = conf['opnsense']['api_secret']
 t_chatid = conf['telegram']['chatid']
 t_token = conf['telegram']['token']
 
+smtp_from = conf['email']['from']
+smtp_to = conf['email']['to']
+smtp_host = conf['email']['host']
+
 url = 'https://' + host + '/api/core/firmware/status'
 
 r = requests.get(url,verify=verify,auth=(api_key, api_secret))
@@ -113,7 +120,20 @@ if r.status_code == 200:
     message = parse_res(res)
 
     if message != None:
-        send_telegram(message, t_chatid, t_token)
+        if conf['emitter'] == "email":
+            msg = EmailMessage()
+            msg.set_content = message
+            msg['Subject'] = f'OPNsense Updater Notification'
+            msg['From'] = smtp_from
+            msg['To'] = smtp_to
+            s = smtplib.SMTP(smtp_host)
+            s.send_message(msg)
+            s.quit()
+        elif conf['emitter'] == "telegram":
+            send_telegram(message, t_chatid, t_token)
+        else:
+            print('[ERROR] Unknown emitter!')
+        
     else:
         print('[INFO] There are no updates or major upgrades available')
 

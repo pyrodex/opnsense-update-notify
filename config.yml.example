@@ -1,13 +1,18 @@
 ---
 
-emitter: telegram
+emitter: email
+
+email:
+  from: "firewall@domain.com"
+  to: "user@domain.com"
+  host: localhost
 
 telegram:
-  token:
-  chatid:
+  token: example
+  chatid: 1234
 
 opnsense:
-  host:
+  host: firewall.local
   self_signed: true
-  api_key:
-  api_secret:
+  api_key: insert api key here
+  api_secret: insert api key here
