@@ -72,9 +72,12 @@ email:
   to:
   host:
 ```
-`from` is the Email address you want to tag as FROM when notifications are sent
-`to` is the Email address you want to tag as TO when notifications are sent to be received
-`host` is the SMTP host (TBD add auth and port)
+
+`from` is the Email address you want to tag as FROM when notifications are sent.
+
+`to` is the Email address you want to tag as TO when notifications are sent to be received.
+
+`host` is the SMTP host (TBD add auth and port).
 
 #### Telegram
 
