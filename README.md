@@ -17,6 +17,14 @@ Based on the script by Bart J. Smit, 'ObecalpEffect' and Franco Fichtner, forked
 
 Based on the script from Bryce Torcello, forked from https://github.com/losuler/opnsense-update-notify.
 
+
+## TODO
+
+- [ ] Add SMTP AUTH
+- [ ] Add SMTP SSL
+- [ ] Add SMTP Port
+
+
 ## Setup
 
 It's recommended to create a user with access restricted to the API endpoints required to retrieve update information needed by the script. The steps to do this are as follows:
