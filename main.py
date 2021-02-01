@@ -11,6 +11,12 @@ import yamale
 import smtplib
 from email.message import EmailMessage
 
+import argparse
+
+parser = argparse.ArgumentParser(description="OPNsense firmware notification utility")
+parser.add_argument("directory", help="Directory containing the yaml files used by the program")
+args = parser.parse_args()
+
 def valid_conf(schema_file, config_file):
     schema_yamale = yamale.make_schema(schema_file)
     config_yamale = yamale.make_data(config_file)
@@ -93,9 +99,12 @@ def send_telegram(msg, chatid, token):
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-valid_conf('schema.yml', 'config.yml')
-
-with open('config.yml') as f:
+schema_filename = "/schema.yml"
+config_filename = "/config.yml"
+schema_file = args.directory + schema_filename
+config_file = args.directory + config_filename
+valid_conf(schema_file, config_file)
+with open(config_file) as f:
     conf = yaml.safe_load(f)
 
 host       = conf['opnsense']['host']
