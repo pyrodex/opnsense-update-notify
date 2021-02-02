@@ -8,9 +8,15 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import yaml
 import yamale
 
+# SMTP
 import smtplib
 from email.message import EmailMessage
 
+# Logging
+import logging
+from pprint import pprint
+from datetime import datetime
+# Argument parsing
 import argparse
 
 parser = argparse.ArgumentParser(description="OPNsense firmware notification utility")
@@ -26,7 +32,7 @@ def valid_conf(schema_file, config_file):
     except ValueError as e:
         for r in e.results:
             for err in r.errors:
-                print(f"[ERROR] {err}")
+                logging.error('%s', err)
         sys.exit(1)
 
 def parse_res(resp):
@@ -107,6 +113,11 @@ valid_conf(schema_file, config_file)
 with open(config_file) as f:
     conf = yaml.safe_load(f)
 
+# Logging
+logging.basicConfig(filename=conf['logging']['logfile'], filemode='a',format='%(asctime)s: %(levelname)s - %(message)s',datefmt='%m/%d/%Y %H:%M:%S',level=logging.INFO)
+logging.info('Script execution started')
+logging.info('Reading configuration from %s',args.directory)
+
 host       = conf['opnsense']['host']
 # verify is false if self signed
 verify     = not conf['opnsense']['self_signed']
@@ -141,10 +152,12 @@ if r.status_code == 200:
         elif conf['emitter'] == "telegram":
             send_telegram(message, t_chatid, t_token)
         else:
-            print('[ERROR] Unknown emitter!')
+            logging.error('Unknown emitter %s!',conf['emitter'])
         
     else:
-        print('[INFO] There are no updates or major upgrades available')
+        logging.info('There are no updates or major upgrades available')
 
 else:
-    print(f'[ERROR] {res.text}')
+    logging.error('Unknown status code %s', {res.text})
+
+logging.info('Script execution finished')

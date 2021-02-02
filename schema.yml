@@ -2,6 +2,9 @@
 
 emitter: enum('telegram', 'email')
 
+logging:
+  logfile: str()
+
 email:
   from: str()
   to: str()

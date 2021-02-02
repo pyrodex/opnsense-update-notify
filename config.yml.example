@@ -2,6 +2,9 @@
 
 emitter: email
 
+logging:
+  file: /var/log/opnsense-update.log
+
 email:
   from: "firewall@domain.com"
   to: "user@domain.com"
