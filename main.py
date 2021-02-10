@@ -37,14 +37,14 @@ def valid_conf(schema_file, config_file):
 
 def parse_res(resp):
     if int(resp['updates']) > 0:
-        message = 'OPNsense Updates Available\n'
+        message = 'OPNsense Updates Available\n\n'
         message += f"Packages to download: {resp['updates']}\n"
-        message += f"Download size:{resp['download_size']}\n"
+        message += f"Download size: {resp['download_size']}\n\n"
 
         new_pkgs = resp['new_packages']
 
         if len(new_pkgs) > 0:
-            message += 'New:\n'
+            message += 'New:\n\n'
 
             if type(new_pkgs) == dict:
                 for pkg in new_pkgs:
@@ -56,21 +56,21 @@ def parse_res(resp):
         upg_pkgs = resp['upgrade_packages']
 
         if len(upg_pkgs) > 0:
-            message += 'Upgrade:\n'
+            message += 'Upgrade:\n\n'
 
             if type(upg_pkgs) == dict:
                 for pkg in upg_pkgs:
                     message += f"{new_pkgs[pkg]['name']} from {new_pkgs[pkg]['current_version']}" + \
-                        f"to {new_pkgs[pkg]['new_version']}\n"
+                        f" to {new_pkgs[pkg]['new_version']}\n"
             else:
                 for pkg in upg_pkgs:
                     message += f"{pkg['name']} from {pkg['current_version']}" + \
-                        f"to {pkg['new_version']}\n"
+                        f" to {pkg['new_version']}\n"
 
         reinst_pkgs = resp['reinstall_packages']
 
         if len(reinst_pkgs) > 0:
-            message += 'Reinstall:\n'
+            message += 'Reinstall:\n\n'
 
             if type(reinst_pkgs) == dict:
                 for pkg in reinst_pkgs:
@@ -80,7 +80,7 @@ def parse_res(resp):
                     message += f"{pkg['name']} {pkg['version']}\n"
 
         if resp['upgrade_needs_reboot'] == '1':
-            message += 'This requires a reboot\n'
+            message += '\nThis requires a reboot\n'
 
     if resp['upgrade_major_version'] != '':
         try:
@@ -138,11 +138,10 @@ r = requests.get(url,verify=verify,auth=(api_key, api_secret))
 if r.status_code == 200:
     res = json.loads(r.text)
     message = parse_res(res)
-
     if message != None:
         if conf['emitter'] == "email":
             msg = EmailMessage()
-            msg.set_content = message
+            msg.set_content(message)
             msg['Subject'] = f'OPNsense Updater Notification'
             msg['From'] = smtp_from
             msg['To'] = smtp_to
