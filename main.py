@@ -148,8 +148,10 @@ if r.status_code == 200:
             s = smtplib.SMTP(smtp_host)
             s.send_message(msg)
             s.quit()
+            logging.info('Detected an update or major upgrade available, notification sent via email')
         elif conf['emitter'] == "telegram":
             send_telegram(message, t_chatid, t_token)
+            logging.info('Detected an update or major upgrade available, notification sent via telegram')
         else:
             logging.error('Unknown emitter %s!',conf['emitter'])
         
